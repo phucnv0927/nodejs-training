@@ -3,7 +3,8 @@ const rootDir = require('./utils/path');
 const adminRoute = require('./router/admin');
 const shopRoute = require('./router/shop');
 // const sequelize = require('./utils/database');
-const connectDb = require('./utils/database-nosql');
+// const connectDb = require('./utils/database-nosql');
+const connectMongoose = require('./utils/database-mongoose');
 
 const express = require('express');
 const app = express();
@@ -26,7 +27,6 @@ app.use(shopRoute);
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
 })
-
 // sequelize
 //   // .sync()
 //   .sync({force: true})
@@ -37,4 +37,14 @@ app.use((req, res, next) => {
 //     console.log(err);
 //   });
 
-app.listen(3000);
+const startServer = async () => {
+  try {
+    await connectMongoose();
+    app.listen(3000);
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+startServer();
