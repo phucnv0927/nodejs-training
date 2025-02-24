@@ -10,13 +10,13 @@ const isExistedUser = async (email) => {
 const register = async (req, res) => {
   const { email, password } = req.body;
 
-  const userExists = this.isExistedUser(email);
+  const userExists = await isExistedUser(email);
   if (userExists) {
     return res.status(400).send({ message: 'Email has already created' });
   }
-
-  data.password = await bcrypt.hash(password, 8);
-  const createdUser = User.create(data);
+  const hashPassword = await bcrypt.hash(password, 8);
+  const data = {...req.body, password: hashPassword };
+  const createdUser = await User.create(data);
 
   return res.status(201).send({ user: createdUser, message: 'Registered successfully !' });
 }
