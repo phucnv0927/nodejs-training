@@ -15,7 +15,7 @@ const register = async (req, res) => {
     return res.status(400).send({ message: 'Email has already created' });
   }
   const hashPassword = await bcrypt.hash(password, 8);
-  const data = {...req.body, password: hashPassword };
+  const data = { ...req.body, password: hashPassword };
   const createdUser = await User.create(data);
 
   return res.status(201).send({ user: createdUser, message: 'Registered successfully !' });
@@ -42,9 +42,9 @@ const authenticateToken = (req, res, next) => {
   if (!token) return res.status(401).json({ message: 'Unauthenticate.' });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) return res.status(401).json({ message: 'Unauthenticate.' });
-      req.user = user;
-      next();
+    if (err) return res.status(401).json({ message: 'Unauthenticate.' });
+    req.user = user;
+    next();
   });
 };
 
