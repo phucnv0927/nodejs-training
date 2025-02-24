@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "nodejs-training",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}

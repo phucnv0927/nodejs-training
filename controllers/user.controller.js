@@ -4,12 +4,9 @@ const catchAsync = require('../utils/catchAsync');
 
 const getUsers = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'email']);
-  if (filter.name) {
-    filter.name = { $regex: filter.name, $options: 'i' };
-  }
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.queryUsers(filter, options);
-  res.send(result);
+  const users = await userService.queryUsers(filter, options);
+  return res.status(200).send(users);
 });
 
 module.exports = { getUsers };
