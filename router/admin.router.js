@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const ProductController = require('../controllers/product.controller');
+const productController = require('../controllers/product.controller');
 const userController = require('../controllers/user.controller');
 const authService = require('../services/auth.service');
 
-// router.get('/products', ProductController.getAll);
+router.get('/products', authService.authenticateToken, productController.getProducts);
 // router.get('/products/:id', ProductController.get);
-// router.post('/products/store', ProductController.store);
+router.post('/products/store', authService.authenticateToken, productController.createProduct);
 // router.put('/products/:id/update', ProductController.update);
 // router.delete('/products/:id/delete', ProductController.delete);
 

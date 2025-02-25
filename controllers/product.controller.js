@@ -1,77 +1,21 @@
-// const { Product } = require('../models');
+const productService = require('../services/product.service');
+const catchAsync = require('../utils/catchAsync');
+const pick = require('../utils/pick');
 
-// exports.getAll = (req, res, next) => {
-//   Product
-//     .findAll()
-//     .then(products => {
-//       res.status(200).send(products);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// }
+const getProducts = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name', 'email']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const products = await productService.getProducts(filter, options);
+  return res.status(200).send(products);
+})
 
-// exports.get = (req, res, next) => {
-//   Product
-//     .findByPk(req.params?.id)
-//     .then(product => {
-//       if (!product) {
-//         return res.status(404).send({});
-//       }
-//       res.status(200).send(product);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// }
+const createProduct = catchAsync(async (req, res) => {
+  const user = req.user;
+  const product = await productService.createProduct(user, req);
+  return res.status(200).send(product);
+});
 
-// exports.store = (req, res, next) => {
-//   Product
-//     .create({
-//       title: req.body.title,
-//       price: req.body.price,
-//       imageUrl: req.body.image_url,
-//       description: req.body.description
-//     })
-//     .then(product => {
-//       res.status(201).send(product);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// }
-
-// exports.update = (req, res, next) => {
-//   Product
-//     .findByPk(req.params?.id)
-//     .then(product => {
-//       if (!product) {
-//         return res.status(404).send({});
-//       }
-//       product.title = req.body.title;
-//       product.price = req.body.price;
-//       product.imageUrl = req.body.imageUrl;
-//       product.description = req.body.description;
-//       product.save();
-//       res.status(200).send(product);
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     });
-// }
-
-// exports.delete = (req, res, next) => {
-//   Product
-//     .findByPk(req.params.id)
-//     .then(product => {
-//       if (!product) {
-//         res.status(404).send('Not Found');
-//       }
-//       product.destroy();
-//       res.status(200).send('Delete successfully !');
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     })
-
-// }
+module.exports = {
+  getProducts,
+  createProduct
+};
