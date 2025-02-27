@@ -6,6 +6,8 @@ const rootDir = require('./utils/path');
 const router = require('./router');
 const db = require('./models');
 const errorHandler = require('./utils/errorHandler');
+const graphql = require('./graphql');
+const limiter = require('./middlewares/limiter.middleware');
 
 const express = require('express');
 const app = express();
@@ -22,7 +24,9 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(rootDir, 'public')));
 
+app.use(limiter);
 app.use(router);
+app.use('/graphql', graphql);
 app.use(errorHandler);
 
 app.use((req, res, next) => {
