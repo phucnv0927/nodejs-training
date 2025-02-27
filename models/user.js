@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -55,11 +56,36 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'Invalid email format'
+        },
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [8, 10],
+          msg: 'Password must be at least 8 characters'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      afterValidate: async (user) => {
+        const salt = await bcrypt.genSalt(8);
+        user.password = await bcrypt.hash(user.password, salt);
+      },
+    }
   });
   return User;
 };
