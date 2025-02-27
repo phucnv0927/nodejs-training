@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Product } = require('../models');
 const { Op } = require('sequelize');
 const paginate = require('../utils/paginate');
 
@@ -10,7 +10,27 @@ const queryUsers = async (filter, options) => {
     ];
     delete filter.name;
   }
-  return await paginate(User, filter, options);;
+
+  return await paginate(User, filter, {
+    ...options,
+    attributes: ['id', 'firstName', 'lastName', 'email'],
+    include: [
+      {
+        model: Product,
+        as: 'products',
+        attributes: ['id', 'name', 'price'],
+        required: false,
+        where: { name: { [Op.like]: '%Milk%' } },
+        include: [
+          {
+            model: User,
+            as: 'user',
+            attributes: ['email'],
+          },
+        ],
+      },
+    ],
+  });;
 };
 
 module.exports = {

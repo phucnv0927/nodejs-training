@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Product, {
+        foreignKey: 'userId',
+        as: 'products'
+      })
     }
     /**
      * Helper method for finding user by email
