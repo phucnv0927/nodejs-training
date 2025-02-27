@@ -6,8 +6,7 @@ const getProducts = async (filter, options) => {
   return await paginate(Product, filter, options);;
 };
 
-const createProduct = async (user, req) => {
-  const data = req.body
+const createProduct = async (user, data) => {
   return await Product.create({ ...data, userId: user.id });
 }
 
