@@ -5,6 +5,7 @@ const rootDir = require('./utils/path');
 // const connectMongoose = require('./utils/database-mongoose');
 const router = require('./router');
 const db = require('./models');
+const errorHandler = require('./utils/errorHandler');
 
 const express = require('express');
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(rootDir, 'public')));
 
 app.use(router);
+app.use(errorHandler);
 
 app.use((req, res, next) => {
   res.status(404).send('Not Found');
