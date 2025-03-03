@@ -6,7 +6,7 @@ const rootDir = require('./utils/path');
 const router = require('./router');
 const db = require('./models');
 const errorHandler = require('./utils/errorHandler');
-const graphql = require('./graphql');
+const apolloServer = require('./graphql');
 const limiter = require('./middlewares/limiter.middleware');
 
 const express = require('express');
@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(limiter);
 app.use(router);
-app.use('/graphql', graphql);
+// app.use('/graphql', graphql);
 app.use(errorHandler);
 
 app.use((req, res, next) => {
@@ -37,6 +37,7 @@ db.sequelize
   .authenticate()
   .then(result => {
     app.listen(3000);
+    apolloServer.listen(4000);
   })
   .catch (err => {
     console.log(err);

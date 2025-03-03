@@ -1,24 +1,14 @@
-const { User, Product } = require('../models');
+const userResolvers = require('./modules/user/user.resolver');
+const productResolvers = require('./modules/product/product.resolver');
 
-const resolvers = {
-  async getUsers() {
-    return await User.findAll({
-      include: [
-        {
-          model: Product,
-          as: 'products',
-        },
-      ],
-    });
+module.exports = {
+  Query: {
+    ...userResolvers.Query,
+    ...productResolvers.Query,
   },
-  async createUser(obj, _) {
-    try {
-      const user = await User.create(obj);
-      return user;
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
+  Mutation: {
+    ...userResolvers.Mutation,
+    ...productResolvers.Mutation,
+  },
 };
 
-module.exports = resolvers;

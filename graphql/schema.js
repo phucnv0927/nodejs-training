@@ -1,26 +1,14 @@
-const { buildSchema } = require('graphql');
+const { gql } = require('graphql-tag');
+const userSchema = require('./modules/user/user.schema');
+const productSchema = require('./modules/product/product.schema');
 
-module.exports = buildSchema(`
-  type Product {
-    id: ID!
-    name: String!
-    price: Float!
-  }
+const rootSchema = gql`
+  type Query
+  type Mutation
+`;
 
-  type User {
-    id: ID!
-    firstName: String,
-    lastName: String,
-    email: String!,
-    password: String!
-    products: [Product]
-  }
-
-  type Query {
-    getUsers: [User]
-  }
-
-  type Mutation {
-    createUser(firstName: String!, lastName: String!, email: String!, password: String!): User
-  }
-`);
+module.exports = [
+  rootSchema,
+  userSchema,
+  productSchema
+];

@@ -1,9 +1,7 @@
-const { graphqlHTTP } = require('express-graphql');
-const schema = require('./schema');
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
-module.exports = graphqlHTTP({
-  schema,
-  rootValue: resolvers,
-  graphiql: true
-});
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+
+module.exports = apolloServer;
