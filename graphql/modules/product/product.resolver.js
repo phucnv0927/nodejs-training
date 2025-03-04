@@ -1,9 +1,11 @@
-const { Product } = require('../../../models');
+const { User, Product } = require('../../../models');
 
 const productResolvers = {
   Query: {
     async getProducts() {
-      return await Product.findAll();
+      return await Product.findAll({
+        include: { model: User, as: 'user' }
+      });
     },
   },
   Mutation: {

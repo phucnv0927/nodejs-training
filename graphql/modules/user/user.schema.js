@@ -9,11 +9,22 @@ module.exports = gql`
     products: [Product]
   }
 
+  type Meta {
+    total: Int
+    limit: Int
+    page: Int
+  }
+
+  type UserPagination {
+    data: [User]
+    meta: Meta
+  }
+
   extend type Query {
-    getUsers: [User]
+    getUsers(name: String, email: String, sortBy: String, limit: Int, page: Int): UserPagination
   }
 
   extend type Mutation {
-    createUser(firstName: String!, lastName: String!, email: String!): User
+    createUser(firstName: String!, lastName: String!, email: String!, password: String!): User
   }
 `;
