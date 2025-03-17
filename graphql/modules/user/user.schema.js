@@ -7,6 +7,7 @@ module.exports = gql`
     lastName: String
     email: String!
     products: [Product]
+    courses: [Course]
   }
 
   type Meta {

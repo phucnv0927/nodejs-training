@@ -1,9 +1,13 @@
 const { User, Product } = require('../../../models');
 const { userService } = require('../../../services');
+const { AuthenticationError } = require('apollo-server-errors');
 
 const userResolvers = {
   Query: {
-    getUsers: async (_, args) => {
+    getUsers: async (_, args, { user }) => {
+      if (!user) {
+        throw new AuthenticationError('You must be logged in');
+      }
       const filter = { name: args.name, email: args.email };
       const options = { sortBy: args.sortBy, limit: args.limit, page: args.page };
       const result = await userService.queryUsers(filter, options);

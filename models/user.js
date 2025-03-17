@@ -13,7 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Product, {
         foreignKey: 'userId',
         as: 'products'
-      })
+      });
+      this.belongsToMany(models.Course, {
+        through: 'Users_Courses',
+        foreignKey: 'userId',
+        as: 'courses',
+        timestamps: false
+      });
     }
     /**
      * Helper method for finding user by email

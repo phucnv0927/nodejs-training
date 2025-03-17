@@ -1,4 +1,4 @@
-const { User, Product } = require('../models');
+const { User, Product, Course } = require('../models');
 const { Op } = require('sequelize');
 const paginate = require('../utils/paginate');
 
@@ -22,15 +22,13 @@ const queryUsers = async (filter, options) => {
         as: 'products',
         attributes: ['id', 'name', 'price'],
         required: false,
-        where: { name: { [Op.like]: '%Milk%' } },
-        include: [
-          {
-            model: User,
-            as: 'user',
-            attributes: ['email'],
-          },
-        ],
       },
+      {
+        model: Course,
+        as: 'courses',
+        attributes: ['id', 'course_name', 'course_description', 'course_price'],
+        required: false,
+      }
     ],
   });;
 };

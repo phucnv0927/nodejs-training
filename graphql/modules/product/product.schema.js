@@ -5,7 +5,6 @@ module.exports = gql`
     id: ID!
     name: String!
     price: Float!
-    user: User
   }
 
   extend type Query {

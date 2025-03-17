@@ -1,46 +1,41 @@
 'use strict';
 
-const tableName = 'Products';
+const tableName = 'Users_Courses';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.createTable(tableName, {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      price: {
-        type: Sequelize.FLOAT,
-        allowNull: false
+        autoIncrement: true,
+        allowNull: false,
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'Users',
-          key: 'id'
+          key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       },
-      createdAt: {
+      courseId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.DATE
+        references: {
+          model: 'Courses',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
-  async down(queryInterface, Sequelize) {
+
+  async down (queryInterface, Sequelize) {
     const constraints = await queryInterface.getForeignKeyReferencesForTable(tableName);
 
     for (const constraint of constraints) {
