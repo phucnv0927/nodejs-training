@@ -8,9 +8,20 @@ const db = require('./models');
 const errorHandler = require('./utils/errorHandler');
 const apolloServer = require('./graphql');
 const limiter = require('./middlewares/limiter.middleware');
+const cors = require('cors');
 
 const express = require('express');
 const app = express();
+
+const corsOptions = {
+  origin: ["http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 
 // parse json request body
 app.use(express.json());
@@ -35,8 +46,8 @@ app.use((req, res, next) => {
 
 db.sequelize
   .authenticate()
-  .then(result => {
-    app.listen(3000);
+  .then(() => {
+    app.listen(3001);
     apolloServer.listen(4000);
   })
   .catch (err => {
