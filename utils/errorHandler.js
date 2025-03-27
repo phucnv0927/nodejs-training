@@ -9,7 +9,7 @@ const errorHandler = (err, req, res, next) => {
     const messages = err.errors.map(e => e.message);
     return res.status(400).json({ errors: messages });
   }
-
+  console.log(err.message);
   res.status(500).json({ message: 'Internal server error' });
 };
 

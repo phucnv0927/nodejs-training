@@ -95,7 +95,13 @@ module.exports = (sequelize, DataTypes) => {
         const salt = await bcrypt.genSalt(8);
         user.password = await bcrypt.hash(user.password, salt);
       },
-    }
+    },
+    defaultScope: {
+      attributes: { exclude: ['password'] }
+    },
+    scopes: {
+      withPassword: { attributes: {} }
+    },
   });
   return User;
 };
